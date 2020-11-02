@@ -1,0 +1,202 @@
+
+securityDefinitions:
+    api_key:
+      type: "apiKey"
+      name: "authorization"
+      in: "header"
+/posts:
+    get:
+      tags:
+      - "Posts"
+      summary: "Returns all post"
+      description: Login to the application
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+              type: "object"
+              additionalProperties:
+                type: "integer"
+                format: "int32"
+      security:
+        - api_key: []
+
+/user/login:
+    post:
+      tags:
+      - "user"
+      summary: "Logs user into the system"
+      description: ""
+      operationId: "loginUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "formData"
+        description: "The user name for login"
+        required: true
+        type: "string"
+      - name: "password"
+        in: "formData"
+        description: "The password for login in clear text"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Return access token"
+          schema:
+             type: "string"
+          headers:
+            authorization:
+              type: "string"
+              description: "Access token assigned on header"
+        "400":
+          description: "Invalid username/password supplied"
+
+/user/register:
+    post:
+      tags:
+      - "user"
+      summary: "Register new user"
+      description: ""
+      operationId: "regiseterUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "formData"
+        description: "Register username "
+        required: true
+        type: "string"
+      - name: "password"
+        in: "formData"
+        description: "Password user"
+        required: true
+        type: "string"
+      - name: "password"
+        in: "formData"
+        description: "Password user"
+        required: true
+        type: "string"
+      - name: "email"
+        in: "formData"
+        description: "Email"
+        required: true
+        type: "string"
+      - name: "role"
+        in: "formData"
+        description: "Role user"
+        required: true
+        type: "array"
+        items:
+          type: "string"
+          enum:
+          - "member"
+          - "manager"
+          - "admin"
+          default: "member"
+      - name: "displayname"
+        in: "formData"
+        description: "Display name"
+        type: "string"
+      - name: "phone_number"
+        in: "formData"
+        description: "Phone number user"
+        type: "string"  
+      responses:
+        "200":
+          description: "Return user's information"
+          schema:
+            $ref: "#/definitions/User"
+        "400":
+          description: "Register Error" 
+
+/user/profile:
+    get:
+      tags:
+      - "user"
+      summary: "Get information of current user"
+      description: "Get information of current user"
+      operationId: "profileUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      responses:
+        "200":
+          description: "Return access token"
+          schema:
+             $ref: "#/definitions/User"
+        "400":
+          description: "Invalid Token" 
+        "401":
+          description: "Access Denied"  
+      security:
+        - api_key: []
+
+/user/profile/update:
+    put:
+      tags:
+      - "user"
+      summary: "Update profile current user"
+      description: "Update profile current userr"
+      operationId: "updateProfileCurrentUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "displayname"
+        in: "formData"
+        description: "display name that need to be updated"
+        type: "string"
+      - name: "phone_number"
+        in: "formData"
+        description: "Phone number that need to be updated"
+        type: "string"
+      - name: "password"
+        in: "formData"
+        description: "password that need to be updated"
+        type: "string"
+      responses:
+        "200":
+          description: "Updating account successful"
+          schema:
+             type: "string"
+             example: "Updating success"
+        "400":
+          description: "Invalid Token" 
+        "401":
+          description: "Access Denied"  
+      security:
+        - api_key: []    
+                
+definitions:
+  User:
+    type: "object"
+    properties:
+      _id:
+        type: "object"
+      email:
+        type: "string"
+      password:
+        type: "string"
+      displayname:
+        type: "string"
+      role:
+        type: "string" 
+      phone_number:
+        type: "string"
+      thumbnail_url:
+        type: "string"
+      date:
+        type: "string"
+    xml:
+      name: "User"     
+         
+
+        
+ 

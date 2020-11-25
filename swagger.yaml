@@ -24,6 +24,36 @@ securityDefinitions:
       security:
         - api_key: []
 
+#FILE API
+/files/upload:
+    post:
+      tags:
+      - "File"
+      summary: Uploads a file.
+      consumes:
+      - "multipart/form-data"
+      operationId: "fileUpload"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "file_upload"
+        in: "formData"
+        description: "The file to upload."
+        required: true
+        type: "file"
+      responses:
+        "200":
+          description: "Return access token"
+          schema:
+             type: "string"
+          headers:
+            authorization:
+              type: "string"
+              description: "Access token assigned on header"
+        "400":
+          description: "Invalid username/password supplied"
+
+# USER API
 /user/login:
     post:
       tags:
@@ -128,7 +158,7 @@ securityDefinitions:
       - "application/json"
       responses:
         "200":
-          description: "Return access token"
+          description: "Return profle current user"
           schema:
              $ref: "#/definitions/User"
         "400":
@@ -172,8 +202,61 @@ securityDefinitions:
         "401":
           description: "Access Denied"  
       security:
-        - api_key: []    
-                
+        - api_key: []
+
+/user/listusers:
+      get:
+        tags:
+        - "user"
+        summary: " get list of all users"
+        description: ""
+        operationId: "getListUsers"
+        produces:
+        - "application/xml"
+        - "application/json"
+        responses:
+            "200":
+              description: "Return data all of users"
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/definitions/User"
+            "400":
+              description: "Invalid Token" 
+            "401":
+              description: "Access Denied"  
+            "403":
+              description: "Access Forrbiden"  
+        security:
+          - api_key: []            
+
+/user/refresh:
+      post:
+        tags:
+        - "user"
+        summary: "Refresh token"
+        description: ""
+        operationId: "refresh"
+        produces:
+        - "application/xml"
+        - "application/json"
+        parameters:
+        - name: "refreshToken"
+          in: "header"
+          required: false
+          description: "Refresh Token"
+          type: "string"
+        responses:
+            "200":
+              description: "Return new Access Token"
+              schema:
+                type: "string"
+            "400":
+              description: "Invalid Token" 
+            "401":
+              description: "Access Denied"  
+
+
 definitions:
   User:
     type: "object"

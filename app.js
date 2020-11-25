@@ -8,7 +8,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var authRouter  = require('./routes/auth');
 var postRouter  = require('./routes/posts');
-
+var filesRouter = require('./routes/file');
 // SWAGGER UI
 const YAML = require('yamljs');
 const swaggerUi = require('swagger-ui-express');
@@ -60,9 +60,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Rout Middlewares
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/api/user', authRouter);
 app.use('/api/posts', postRouter);
+app.use('/api/files', filesRouter);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // catch 404 and forward to error handler

@@ -29,7 +29,7 @@ const updateValidation = data => {
         displayname:Joi.string().allow(null, ''),
         phone_number:Joi.string().allow(null, ''),
         password:Joi.string().min(6).allow(null, ''),
-        profile:Joi.object()
+        jwtDecoded:Joi.object()
     });
     return schema.validate(data);
 }
